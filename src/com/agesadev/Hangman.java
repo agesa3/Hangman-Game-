@@ -27,23 +27,38 @@ public class Hangman {
 
         List<Character> playerGuesses = new ArrayList<>();
         printWordState(word, playerGuesses);
+        while (true) {
+            getPlayerGuess(userInput, word, playerGuesses);
+
+            if (printWordState(word, playerGuesses)) {
+                break;
+            }
+            System.out.println("Please Enter your guess for the word");
+        }
+        System.out.println("You Win !!!!!!");
+    }
+
+    private static void getPlayerGuess(Scanner userInput, String word, List<Character> playerGuesses) {
+
         System.out.println("Please Enter a letter: ");
         String userGuess = userInput.nextLine();
         playerGuesses.add(userGuess.charAt(0));
-        printWordState(word, playerGuesses);
 
     }
 
-    private static void printWordState(String word, List<Character> playerGuesses) {
+    private static boolean printWordState(String word, List<Character> playerGuesses) {
+        int correctCount = 0;
         for (int i = 0; i < word.length(); i++) {
             if (playerGuesses.contains(word.charAt(i))) {
                 System.out.print(word.charAt(i));
+                correctCount++;
+
             } else {
                 System.out.print("-");
             }
         }
         System.out.println();
+        return (word.length() == correctCount);
     }
-
 
 }
