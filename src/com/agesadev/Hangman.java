@@ -27,23 +27,73 @@ public class Hangman {
 
         List<Character> playerGuesses = new ArrayList<>();
         printWordState(word, playerGuesses);
+        int wrongCount = 0;
         while (true) {
-            getPlayerGuess(userInput, word, playerGuesses);
+
+            printHangMan(wrongCount);
+
+            if (wrongCount >= 6) {
+                System.out.println("You Loose !!!!");
+                break;
+            }
+            printWordState(word, playerGuesses);
+            if (!getPlayerGuess(userInput, word, playerGuesses)) {
+                wrongCount++;
+            }
 
             if (printWordState(word, playerGuesses)) {
+                System.out.println("You Win !!!!!!");
                 break;
             }
             System.out.println("Please Enter your guess for the word");
+            if (userInput.nextLine().equals(word)) {
+                System.out.println("You Win !!!!!!");
+                break;
+            } else {
+                System.out.println("Ooops.Try again");
+            }
         }
-        System.out.println("You Win !!!!!!");
+
     }
 
-    private static void getPlayerGuess(Scanner userInput, String word, List<Character> playerGuesses) {
+    private static void printHangMan(int wrongCount) {
+        System.out.println("---------");
+        System.out.println(" |      |");
 
+        if (wrongCount >= 1) {
+            System.out.println(" o");
+        }
+        if (wrongCount >= 2) {
+            System.out.print("\\ ");
+            if (wrongCount >= 3) {
+                System.out.println("/");
+            } else {
+                System.out.println("");
+            }
+        }
+
+        if (wrongCount >= 4) {
+            System.out.println(" |");
+        }
+
+        if (wrongCount >= 5) {
+            System.out.print(" /");
+            if (wrongCount >= 6) {
+                System.out.println("\\");
+            } else {
+                System.out.println("");
+
+            }
+        }
+        System.out.println("");
+        System.out.println("");
+    }
+
+    private static boolean getPlayerGuess(Scanner userInput, String word, List<Character> playerGuesses) {
         System.out.println("Please Enter a letter: ");
         String userGuess = userInput.nextLine();
         playerGuesses.add(userGuess.charAt(0));
-
+        return word.contains(userGuess);
     }
 
     private static boolean printWordState(String word, List<Character> playerGuesses) {
